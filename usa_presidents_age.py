@@ -14,9 +14,8 @@ import os
 import re
 import numpy as np
 import pandas as pd
-import urllib.request
-from bs4 import BeautifulSoup
-from multiprocessing import Pool
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 
 
 ################################################################################
@@ -40,13 +39,37 @@ if __name__ == "__main__":
             names.append(name)
 
             age = re.sub("\xa0", " ", age)
-            print(age)
             age, date = age.split("days")
             age, _ = age.split(" years")
-            ages.append(age)
+            ages.append(int(age))
             start_dates.append(date)
 
-    print(names)
-    print(ages)
-    print(start_dates)
+    #print(names)
+    #print(ages)
+    #print(start_dates)
 
+    # visualize
+    x = range(len(names))
+    x_labels = []
+    for i in range(len(names)):
+        #x_labels.append(names[i] + "\n" + start_dates[i])
+        x_labels.append(names[i])
+
+    colours = cm.rainbow(np.linspace(0, 1, len(names)))
+    plt.style.use("dark_background")
+    plt.figure(figsize=(20, 10))
+    plt.bar(x, ages, color=colours, zorder=2)
+    plt.title("USA Presidents' Ages")
+    plt.xlabel("USA President | Inauguration Date")
+    plt.xticks(x, x_labels, rotation=75, horizontalalignment="right")
+    plt.xlim(left=-1, right=len(names))
+    plt.ylabel("Age (years)")
+    plt.gcf().subplots_adjust(bottom=0.2)
+    plt.grid(axis="y")
+    #plt.show()
+
+    # save plot
+    plot_filename = "age.png"
+    plot_filepath = os.path.join(os.getcwd(), plot_filename)
+    plt.savefig(plot_filepath)
+    plt.close()
