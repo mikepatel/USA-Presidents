@@ -73,3 +73,33 @@ if __name__ == "__main__":
     plot_filepath = os.path.join(os.getcwd(), plot_filename)
     plt.savefig(plot_filepath)
     plt.close()
+
+    # sort ages
+    # create df
+    age_df = pd.DataFrame()
+    age_df["Name"] = pd.Series(x_labels)
+    age_df["Age"] = pd.Series(ages)
+
+    # sort df
+    age_df = age_df.sort_values("Age", ascending=False)
+    x_labels = []
+    for index, row in age_df.iterrows():
+        x_labels.append(row["Name"])
+
+    # plot df
+    plt.style.use("dark_background")
+    plt.figure(figsize=(20, 10))
+    plt.bar(x, age_df["Age"], color=colours, zorder=2)
+    plt.title("USA Presidents' Ages - Sorted")
+    plt.xlabel("USA President")
+    plt.xticks(x, x_labels, rotation=75, horizontalalignment="right")
+    plt.xlim(left=-1, right=len(names))
+    plt.ylabel("Age (years)")
+    plt.gcf().subplots_adjust(bottom=0.2)
+    plt.grid(axis="y")
+
+    # save sorted plot
+    plot_filename = "age_sorted.png"
+    plot_filepath = os.path.join(os.getcwd(), plot_filename)
+    plt.savefig(plot_filepath)
+    plt.close()
