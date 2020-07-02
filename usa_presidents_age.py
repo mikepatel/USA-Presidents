@@ -23,6 +23,7 @@ import matplotlib.animation as animation
 ################################################################################
 # Main
 if __name__ == "__main__":
+    """
     # get data from wikipedia
     url = "https://en.wikipedia.org/wiki/List_of_presidents_of_the_United_States_by_age"
 
@@ -82,6 +83,7 @@ if __name__ == "__main__":
     age_df["Name"] = pd.Series(x_labels)
     age_df["Age"] = pd.Series(ages)
     df = age_df
+    df.to_csv(os.path.join(os.getcwd(), "pres.csv"), index=False)
 
     # sort df
     age_df = age_df.sort_values("Age", ascending=False)
@@ -106,9 +108,12 @@ if __name__ == "__main__":
     plot_filepath = os.path.join(os.getcwd(), plot_filename)
     plt.savefig(plot_filepath)
     plt.close()
+    """
 
     # Racing bar chart of US Pres' ages
+    df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
     #print(df)  # not sorted, Wash > Trump
     fig, ax = plt.subplots(figsize=(15, 10))
-    ax.barh(df["Name"], df["Age"])
+    colours = cm.rainbow(np.linspace(0, 1, len(df)))
+    ax.barh(df["Name"], df["Age"], color=colours)
     plt.show()  # plots up to Trump
