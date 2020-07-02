@@ -121,15 +121,18 @@ if __name__ == "__main__":
     #print(df)  # not sorted, Wash > Trump
     #plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(15, 10))
+
+    #ax.grid(True, axis='x', color='white')
     ax.tick_params(length=0)  # remove x-axis tick marks
-    ax.grid(True, axis='x', color='white')
     ax.set_axisbelow(True)
-    [spine.set_visible(False) for spine in ax.spines.values()]
+    [spine.set_visible(False) for spine in ax.spines.values()]  # remove border around figure
+    ax.get_xaxis().set_visible(False)  # hide x-axis
+    
     colours = cm.rainbow(np.linspace(0, 1, len(df)))
     ax.barh(x_labels, df["Age"], color=colours)
 
     # add text onto bars
     for index, row in df.iterrows():
-        ax.text(row["Age"], index, s=row["Age"], ha="left", va="center")
+        ax.text(x=row["Age"], y=index, s=row["Age"], ha="left", va="center")
 
     plt.show()  # plots up to Trump
