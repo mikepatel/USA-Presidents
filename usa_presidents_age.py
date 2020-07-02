@@ -112,6 +112,12 @@ if __name__ == "__main__":
 
     # Racing bar chart of US Pres' ages
     df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
+
+    # concatenate index + Name
+    x_labels = []
+    for index, row in df.iterrows():
+        x_labels.append(str(index+1) + " " + row["Name"])
+
     #print(df)  # not sorted, Wash > Trump
     #plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(15, 10))
@@ -120,5 +126,10 @@ if __name__ == "__main__":
     ax.set_axisbelow(True)
     [spine.set_visible(False) for spine in ax.spines.values()]
     colours = cm.rainbow(np.linspace(0, 1, len(df)))
-    ax.barh(df["Name"], df["Age"], color=colours)
+    ax.barh(x_labels, df["Age"], color=colours)
+
+    # add text onto bars
+    for index, row in df.iterrows():
+        ax.text(row["Age"], index, s=row["Age"], ha="left", va="center")
+
     plt.show()  # plots up to Trump
