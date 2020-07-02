@@ -113,7 +113,12 @@ if __name__ == "__main__":
     # Racing bar chart of US Pres' ages
     df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
     #print(df)  # not sorted, Wash > Trump
+    #plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(15, 10))
+    ax.tick_params(length=0)  # remove x-axis tick marks
+    ax.grid(True, axis='x', color='white')
+    ax.set_axisbelow(True)
+    [spine.set_visible(False) for spine in ax.spines.values()]
     colours = cm.rainbow(np.linspace(0, 1, len(df)))
     ax.barh(df["Name"], df["Age"], color=colours)
     plt.show()  # plots up to Trump
