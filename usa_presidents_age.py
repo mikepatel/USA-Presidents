@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib.ticker as ticker
+import matplotlib.animation as animation
 
 
 ################################################################################
@@ -79,6 +81,7 @@ if __name__ == "__main__":
     age_df = pd.DataFrame()
     age_df["Name"] = pd.Series(x_labels)
     age_df["Age"] = pd.Series(ages)
+    df = age_df
 
     # sort df
     age_df = age_df.sort_values("Age", ascending=False)
@@ -103,3 +106,9 @@ if __name__ == "__main__":
     plot_filepath = os.path.join(os.getcwd(), plot_filename)
     plt.savefig(plot_filepath)
     plt.close()
+
+    # Racing bar chart of US Pres' ages
+    #print(df)  # not sorted, Wash > Trump
+    fig, ax = plt.subplots(figsize=(15, 10))
+    ax.barh(df["Name"], df["Age"])
+    plt.show()  # plots up to Trump
