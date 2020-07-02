@@ -113,9 +113,16 @@ if __name__ == "__main__":
     # Racing bar chart of US Pres' ages
     df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
 
+    # rank oldest > youngest
+    df["Rank"] = df["Age"].rank(method="first", ascending=False)
+    #print(ranked_df)
+    #print(type(ranked_df))
+    print(df)
+    quit()
+
     # concatenate index + Name
     x_labels = []
-    for index, row in df.iterrows():
+    for index, row in ranked_df.iterrows():
         x_labels.append(str(index+1) + " " + row["Name"])
 
     #print(df)  # not sorted, Wash > Trump
@@ -127,12 +134,12 @@ if __name__ == "__main__":
     ax.set_axisbelow(True)
     [spine.set_visible(False) for spine in ax.spines.values()]  # remove border around figure
     ax.get_xaxis().set_visible(False)  # hide x-axis
-    
+
     colours = cm.rainbow(np.linspace(0, 1, len(df)))
     ax.barh(x_labels, df["Age"], color=colours)
 
     # add text onto bars
-    for index, row in df.iterrows():
+    for index, row in ranked_df.iterrows():
         ax.text(x=row["Age"], y=index, s=row["Age"], ha="left", va="center")
 
     plt.show()  # plots up to Trump
