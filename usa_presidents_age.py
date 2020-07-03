@@ -115,14 +115,20 @@ if __name__ == "__main__":
 
     # rank oldest > youngest
     df["Rank"] = df["Age"].rank(method="first", ascending=False)
-    #print(ranked_df)
-    #print(type(ranked_df))
     print(df)
+
+    x_labels = []
+    for index, row in df.iterrows():
+        x_labels.append(str(index + 1) + " " + row["Name"])
+
+    fig, ax = plt.subplots(figsize=(15, 10))
+    ax.barh(df["Rank"], df.index)
+    plt.show()
     quit()
 
     # concatenate index + Name
     x_labels = []
-    for index, row in ranked_df.iterrows():
+    for index, row in df.iterrows():
         x_labels.append(str(index+1) + " " + row["Name"])
 
     #print(df)  # not sorted, Wash > Trump
@@ -139,7 +145,7 @@ if __name__ == "__main__":
     ax.barh(x_labels, df["Age"], color=colours)
 
     # add text onto bars
-    for index, row in ranked_df.iterrows():
+    for index, row in df.iterrows():
         ax.text(x=row["Age"], y=index, s=row["Age"], ha="left", va="center")
 
     plt.show()  # plots up to Trump
