@@ -119,10 +119,23 @@ if __name__ == "__main__":
 
     x_labels = []
     for index, row in df.iterrows():
-        x_labels.append(str(index + 1) + " " + row["Name"])
+        x_labels.append(str(int(row["Rank"])) + " " + row["Name"])
 
     fig, ax = plt.subplots(figsize=(15, 10))
-    ax.barh(df["Rank"], df.index)
+
+    [spine.set_visible(False) for spine in ax.spines.values()]  # remove border around figure
+    ax.get_xaxis().set_visible(False)  # hide x-axis
+    #ax.tick_params(length=0)  # remove x-axis tick marks
+    ax.get_yaxis().set_visible(False)  # hide y-axis
+
+    #colours = cm.rainbow(np.linspace(0, 1, len(df)))
+
+    ax.barh(df["Rank"], df["Age"])
+
+    for index, row in df.iterrows():
+        ax.text(x=-0, y=row["Rank"], s=row["Name"], ha="right", va="center")
+        ax.text(x=row["Age"], y=row["Rank"], s=row["Age"], ha="left", va="center")
+
     plt.show()
     quit()
 
