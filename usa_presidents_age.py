@@ -114,18 +114,22 @@ if __name__ == "__main__":
     df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
 
     # create plot figure
+    plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(15, 10))
 
     # function to be called repeatedly to draw on canvas
     def draw_chart(frame):
         # rank oldest > youngest
         df = pd.read_csv(os.path.join(os.getcwd(), "pres.csv"))
+        df = df.head(frame)
         df["Rank"] = df["Age"].rank(method="first", ascending=True)
         df = df.sort_values(by="Rank", ascending=False)
         df = df.reset_index(drop=True)
 
         ax.clear()
-        ax.barh(df["Rank"], df["Age"])
+        colours = cm.rainbow(np.linspace(0, 1, len(df)))
+        ax.barh(df["Rank"], df["Age"], color=colours)
+        ax.set_title("Oldest to Youngest USA Presidents")
         [spine.set_visible(False) for spine in ax.spines.values()]  # remove border around figure
         ax.get_xaxis().set_visible(False)  # hide x-axis
         ax.get_yaxis().set_visible(False)  # hide y-axis
@@ -137,7 +141,7 @@ if __name__ == "__main__":
     # colours = cm.rainbow(np.linspace(0, 1, len(df)))
     #ax.tick_params(length=0)  # remove x-axis tick marks
 
-    animator = animation.FuncAnimation(fig, draw_chart, frames=range(len(df)))
+    animator = animation.FuncAnimation(fig, draw_chart, frames=range(len(df)), interval=500)
     animator.save("presidents.gif", writer="imagemagick")
 
     quit()
